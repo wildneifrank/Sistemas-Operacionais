@@ -66,7 +66,7 @@ int main() {
 
     //Configuração do socket
     server_address.sin_family = AF_INET;
-    server_address.sin_addr.s_addr = inet_addr("IP");
+    server_address.sin_addr.s_addr = inet_addr("192.168.122.83");
     server_address.sin_port = htons(PORT);
 
     //Associação do socket ao endereço e porta
@@ -90,9 +90,10 @@ int main() {
 
     //Criação das threads
     HANDLE receiveThread = CreateThread(NULL, 0, ReceiveThread, &new_socket, 0, NULL);
-    
+    HANDLE sendThread = CreateThread(NULL, 0, SendThread, &new_socket, 0, NULL);
+
     //Aguarda o término das threads
     WaitForSingleObject(receiveThread, INFINITE);
-
+    WaitForSingleObject(sendThread, INFINITE);
     return 0;
 }
