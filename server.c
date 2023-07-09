@@ -26,6 +26,27 @@ void BroadcastMessage(char* message, int id) {
     }
 }
 
+// Função para tratamento de um cliente individual
+void ClientHandler(void* Args) {
+    ThreadArgs* threadArgs = (ThreadArgs*)Args;
+    SOCKET clientSocket = threadArgs->clientSocket;
+    int id = threadArgs->id;
+    char clientMessage[256];
+
+    while (1) {
+        memset(clientMessage, 0, sizeof(clientMessage));
+        if (recv(clientSocket, clientMessage, sizeof(clientMessage), 0) <= 0) {
+            printf("Cliente desconectado: %d\n", id);
+            break;
+        }
+        
+        printf("Cliente[",id,"] %s\n", clientMessage);
+        BroadcastMessage(clientMessage, id);
+    }
+
+    closesocket(clientSocket);
+    free(Args);
+}
 
 int main() {
     WSADATA wsaData;
