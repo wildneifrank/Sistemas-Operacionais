@@ -18,7 +18,7 @@ typedef struct {
 // Função para envio de mensagens a todos os clientes
 void BroadcastMessage(char* message, int id) {
     for (int i = 0; i < numClients; i++) {
-        if (i != id) {
+        if (i != id && clientSockets[i] != INVALID_SOCKET) {
             if (send(clientSockets[i], message, strlen(message), 0) < 0) {
                 printf("Erro ao enviar mensagem para o cliente\n");
             }
@@ -39,13 +39,14 @@ void ClientHandler(void* Args) {
             printf("Cliente desconectado: %d\n", id);
             break;
         }
-        char result [200];
+        char result[200];
         sprintf(result, "Cliente[%d]: %s\n", id, clientMessage);
         printf(result);
         BroadcastMessage(result, id);
     }
 
     closesocket(clientSocket);
+    clientSockets[id] = INVALID_SOCKET;
     free(Args);
 }
 
