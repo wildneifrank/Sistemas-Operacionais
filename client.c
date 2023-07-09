@@ -34,6 +34,19 @@ DWORD WINAPI ReceiveThread(LPVOID lpParam) {
     }
 }
 
+DWORD WINAPI SendThread(LPVOID lpParam) {
+    SOCKET new_socket = *(SOCKET*)lpParam;
+    char response[100];
+    printf("Conexao estabelecida. Envie uma mensagem.\n");
+    while (1) {
+        //Envio da resposta para o cliente
+        fgets(response, sizeof(response), stdin);
+        send(new_socket, response, strlen(response), 0);
+        printf("Mensagem enviada.\n");
+    }
+
+    return 0;
+}
 
 int main() {
     struct sockaddr_in server_address, client_address;
@@ -77,8 +90,9 @@ int main() {
 
     //Criação das threads
     HANDLE receiveThread = CreateThread(NULL, 0, ReceiveThread, &new_socket, 0, NULL);
-
+    
     //Aguarda o término das threads
     WaitForSingleObject(receiveThread, INFINITE);
+
     return 0;
 }
