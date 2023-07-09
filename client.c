@@ -6,7 +6,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-#define PORT 12345
+#define PORT 8922
 #define BUFFER_SIZE 1024
 
 WSADATA wsaData;
