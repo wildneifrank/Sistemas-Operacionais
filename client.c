@@ -15,7 +15,6 @@ void SendMessageThread() {
         // Enviar dados ao servidor
         char message[256];
 
-        printf("Digite uma mensagem: ");
         fgets(message, sizeof(message), stdin);
         if (send(clientSocket, message, strlen(message), 0) < 0) {
             printf("Erro ao enviar dados ao servidor\n");
@@ -36,7 +35,7 @@ void ReceiveMessageThread() {
             WSACleanup();
             exit(0);
         }
-        printf("%s\n", buffer);
+        printf("%s", buffer);
     }
 }
 
@@ -68,6 +67,7 @@ int main() {
         WSACleanup();
         return 1;
     }
+    printf("Conexao estabelecida com sucesso!\nDigite uma mensagem.\n");
 
     // Criar threads para envio e recebimento de mensagens
     _beginthread(SendMessageThread, 0, NULL);
@@ -75,7 +75,7 @@ int main() {
 
     // Aguardar pelo término das threads
     while (1) {
-        // Espera infinita
+        // Espera infinitas
     }
 
     // Fechar o socket e finalizar o Winsock
