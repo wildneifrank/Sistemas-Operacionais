@@ -72,6 +72,17 @@ int main() {
             continue;
         }
 
+        // Adiciona o novo cliente ao array
+        clientSockets[numClients] = clientSocket;
+        numClients++;
+        ThreadArgs* threadArgs = (ThreadArgs*)malloc(sizeof(ThreadArgs));
+        threadArgs->clientSocket = clientSocket;
+        threadArgs->id = numClients - 1;
+
+        printf("Novo cliente conectado\n");
+
+        // Cria uma nova thread para tratar o cliente
+        _beginthread(ClientHandler, 0, (void*)threadArgs);
     }
 
     closesocket(serverSocket);
