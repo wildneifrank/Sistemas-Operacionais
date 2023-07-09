@@ -105,9 +105,7 @@ int main() {
         // Cria uma nova thread para tratar o cliente
         _beginthread(ClientHandler, 0, (void*)threadArgs);
     }
-
     closesocket(serverSocket);
     WSACleanup();
-
     return 0;
 }
