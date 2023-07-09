@@ -39,9 +39,10 @@ void ClientHandler(void* Args) {
             printf("Cliente desconectado: %d\n", id);
             break;
         }
-        
-        printf("Cliente[",id,"] %s\n", clientMessage);
-        BroadcastMessage(clientMessage, id);
+        char result [200];
+        sprintf(result, "Cliente[%d]: %s\n", id, clientMessage);
+        printf(result);
+        BroadcastMessage(result, id);
     }
 
     closesocket(clientSocket);
@@ -105,7 +106,9 @@ int main() {
         // Cria uma nova thread para tratar o cliente
         _beginthread(ClientHandler, 0, (void*)threadArgs);
     }
+
     closesocket(serverSocket);
     WSACleanup();
+
     return 0;
 }
